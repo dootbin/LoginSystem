@@ -10,13 +10,13 @@ import java.util.UUID;
 public class LoginSystem extends JavaPlugin
 {
     private HashBiMap<UUID, Integer> loginQueue;
-    private int highestLoginPos;
+    private int highestQueuePos;
 
     @Override
     public void onEnable()
     {
         loginQueue = HashBiMap.create();
-        highestLoginPos = 0;
+        highestQueuePos = 0;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class LoginSystem extends JavaPlugin
     {
         if (!loginQueue.containsKey(p))
         {
-            loginQueue.put(p, ++highestLoginPos);
+            loginQueue.put(p, ++highestQueuePos);
         }
     }
 
@@ -61,13 +61,13 @@ public class LoginSystem extends JavaPlugin
             newMap.put(player, pos);
         }
 
-        highestLoginPos--;
+        highestQueuePos--;
         loginQueue = newMap;
     }
 
-    public synchronized int getHighestLoginPos()
+    public synchronized int getHighestQueuePos()
     {
-        return highestLoginPos;
+        return highestQueuePos;
     }
 
 }

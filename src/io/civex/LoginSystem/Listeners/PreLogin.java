@@ -23,17 +23,30 @@ public class PreLogin implements Listener
     public void onPreLogin(AsyncPlayerPreLoginEvent event)
     {
         int playerCount = plugin.getServer().getOnlinePlayers().size();
+        int maxPlayerCount = plugin.getServer().getMaxPlayers();
         int queuePos = plugin.getPositionInQueue(event.getUniqueId());
 
-        if (queuePos > 0)
+        if (playerCount >= maxPlayerCount)
         {
-            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue.");
+            if (queuePos > 0)
+            {
+                event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue.");
+            }
+            else
+            {
+                plugin.addUserToLoginQueue(event.getUniqueId());
+                event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue.");
+            }
         }
-
-        if (plugin.getHighestLoginPos() > 0)
+        else if (playerCount < maxPlayerCount)
         {
-
+            if (queuePos > 0)
+            {
+                if (queuePos > 1)
+                {
+                    event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue.");
+                }
+            }
         }
     }
-
 }
