@@ -2,6 +2,7 @@ package io.civex.LoginSystem;
 
 import com.google.common.collect.HashBiMap;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import java.util.UUID;
 
 /**
@@ -11,6 +12,9 @@ public class LoginSystem extends JavaPlugin
 {
     private HashBiMap<UUID, Integer> loginQueue;
     private int highestQueuePos;
+
+    public boolean loginQueueProgressing = true;
+    public int allowedConnectTime = 45;
 
     @Override
     public void onEnable()
@@ -47,22 +51,41 @@ public class LoginSystem extends JavaPlugin
 
     public synchronized UUID getUserInPosition(int pos)
     {
-        return loginQueue.inverse().get(pos);
+        if (loginQueue.inverse().containsKey(pos))
+        {
+            return loginQueue.inverse().get(pos);
+        }
+        else
+        {
+            return null;
+        }
+
     }
 
-    public synchronized void removeFirstUser()
+    public synchronized void removeFirstUser(int personBeingRemoved)
     {
         HashBiMap<UUID, Integer> newMap = HashBiMap.create();
-        loginQueue.inverse().remove(1);
+        loginQueue.inverse().remove(personBeingRemoved);
 
         for (UUID player : loginQueue.keySet())
         {
-            int pos = loginQueue.get(player) - 1;
+            int pos = loginQueue.get(player);
+
+            if(pos > personBeingRemoved)
+            {
+                pos--;
+            }
+
             newMap.put(player, pos);
         }
 
         highestQueuePos--;
         loginQueue = newMap;
+    }
+
+    public synchronized void removeUserAtPos()
+    {
+
     }
 
     public synchronized int getHighestQueuePos()

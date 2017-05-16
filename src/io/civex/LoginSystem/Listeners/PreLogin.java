@@ -1,7 +1,6 @@
 package io.civex.LoginSystem.Listeners;
 
 import io.civex.LoginSystem.LoginSystem;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -28,6 +27,11 @@ public class PreLogin implements Listener
         int availableSlots = maxPlayerCount - playerCount;
         int queuePos = plugin.getPositionInQueue(event.getUniqueId());
         int highestQueuePos = plugin.getHighestQueuePos();
+
+        if(!plugin.loginQueueProgressing)
+        {
+            availableSlots = 0;
+        }
 
         if (playerCount >= maxPlayerCount)
         {
