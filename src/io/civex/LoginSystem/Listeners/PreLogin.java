@@ -19,12 +19,15 @@ public class PreLogin implements Listener
     }
 
 
+    //if slots available >= your queue pos allow in.
     @EventHandler
     public void onPreLogin(AsyncPlayerPreLoginEvent event)
     {
         int playerCount = plugin.getServer().getOnlinePlayers().size();
         int maxPlayerCount = plugin.getServer().getMaxPlayers();
+        int availableSlots = maxPlayerCount - playerCount;
         int queuePos = plugin.getPositionInQueue(event.getUniqueId());
+        int highestQueuePos = plugin.getHighestQueuePos();
 
         if (playerCount >= maxPlayerCount)
         {
@@ -35,15 +38,25 @@ public class PreLogin implements Listener
             else
             {
                 plugin.addUserToLoginQueue(event.getUniqueId());
+                queuePos = plugin.getPositionInQueue(event.getUniqueId());
                 event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue.");
             }
         }
-        else if (playerCount < maxPlayerCount)
+        else if (availableSlots > 0)
         {
             if (queuePos > 0)
             {
-                if (queuePos > 1)
+                if (queuePos >= availableSlots)
                 {
+                    event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue.");
+                }
+            }
+            else
+            {
+                if (highestQueuePos > availableSlots)
+                {
+                    plugin.addUserToLoginQueue(event.getUniqueId());
+                    queuePos = plugin.getPositionInQueue(event.getUniqueId());
                     event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue.");
                 }
             }
