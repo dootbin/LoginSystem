@@ -1,6 +1,6 @@
 package io.civex.LoginSystem.Commands;
 
-import io.civex.LoginSystem.LoginSystem;
+import io.civex.LoginSystem.LoginSystemPlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,9 +12,9 @@ import org.bukkit.entity.Player;
  */
 public class loginQueueCommand implements CommandExecutor
 {
-    LoginSystem plugin;
+    LoginSystemPlugin plugin;
 
-    public loginQueueCommand(LoginSystem plugin)
+    public loginQueueCommand(LoginSystemPlugin plugin)
     {
         this.plugin = plugin;
     }
@@ -29,7 +29,7 @@ public class loginQueueCommand implements CommandExecutor
             //This is to stop people from logging in (usually for debug when making changes to this plugin)
             if (args[0].equalsIgnoreCase("stop"))
             {
-                if (!player.hasPermission("civex.stopQueue") || !player.isOp())
+                if (!player.hasPermission("civex.queue.stopQueue") || !player.isOp())
                 {
                     sendNoPermission(player);
                     return true;
@@ -42,7 +42,7 @@ public class loginQueueCommand implements CommandExecutor
 
             if (args[0].equalsIgnoreCase("start"))
             {
-                if (!player.hasPermission("civex.stopQueue") || !player.isOp())
+                if (!player.hasPermission("civex.queue.stopQueue") || !player.isOp())
                 {
                     sendNoPermission(player);
                     return true;
@@ -55,7 +55,7 @@ public class loginQueueCommand implements CommandExecutor
 
             if (args[0].equalsIgnoreCase("toggle"))
             {
-                if (!player.hasPermission("civex.stopQueue") || !player.isOp())
+                if (!player.hasPermission("civex.queue.stopQueue") || !player.isOp())
                 {
                     sendNoPermission(player);
                     return true;
@@ -68,11 +68,13 @@ public class loginQueueCommand implements CommandExecutor
 
             if (args[0].equalsIgnoreCase("status"))
             {
-
+                sendLoginQueueStatus(player);
             }
         }
 
-        return false;
+        sender.sendMessage("Please try putting something after the command like status.");
+        sender.sendMessage("Args[0] = " + args[0] + ".");
+        return true;
     }
 
     private void sendNoPermission(Player player)
@@ -98,7 +100,32 @@ public class loginQueueCommand implements CommandExecutor
         if (highPos > 0)
         {
             player.sendMessage(ChatColor.AQUA + "The login queue has [" + highPos + "] people in it.");
+
+            if (plugin.showedPlayersInStatus > 0)
+            {
+                for (int i = 1; i <= 5; i++)
+                {
+                    if (i <= highPos)
+                    {
+                        if (plugin.getUserInPosition(i) != null)
+                        {
+                            sendPlayerPosInfoStatusMessage(player, plugin.getNameFromUUID(plugin.getUserInPosition(i)), i);
+                        }
+
+                    }
+                }
+            }
+        }
+        else
+        {
+            player.sendMessage(ChatColor.AQUA + "There is no one in the queue.");
         }
 
     }
+
+    private void sendPlayerPosInfoStatusMessage(Player receiver, String playerInQueueName, int posInQueue)
+    {
+        receiver.sendMessage(ChatColor.AQUA + "  [" + posInQueue + "] : " + playerInQueueName);
+    }
+
 }

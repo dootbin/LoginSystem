@@ -1,0 +1,14 @@
+name: LoginSystemPlugin
+main: io.civex.LoginSystem.LoginSystemPlugin
+version: 1.0
+author: ryan00793
+description: QueuePlugin.
+commands:
+    queue:
+        description: Queue Command.
+        usage: queue
+        aliases: [q]
+permissions:
+    civex.queue.stopQueue:
+        default: op
+        description: Allows the changing of queue state.

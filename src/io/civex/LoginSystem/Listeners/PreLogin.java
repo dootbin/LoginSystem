@@ -1,6 +1,6 @@
 package io.civex.LoginSystem.Listeners;
 
-import io.civex.LoginSystem.LoginSystem;
+import io.civex.LoginSystem.LoginSystemPlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -10,9 +10,9 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
  */
 public class PreLogin implements Listener
 {
-    LoginSystem plugin;
+    LoginSystemPlugin plugin;
 
-    public PreLogin(LoginSystem pl)
+    public PreLogin(LoginSystemPlugin pl)
     {
         this.plugin = pl;
     }
@@ -41,7 +41,7 @@ public class PreLogin implements Listener
             }
             else
             {
-                plugin.addUserToLoginQueue(event.getUniqueId());
+                plugin.addUserToLoginQueue(event.getUniqueId(), event.getName());
                 queuePos = plugin.getPositionInQueue(event.getUniqueId());
                 event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue.");
             }
@@ -59,7 +59,7 @@ public class PreLogin implements Listener
             {
                 if (highestQueuePos > availableSlots)
                 {
-                    plugin.addUserToLoginQueue(event.getUniqueId());
+                    plugin.addUserToLoginQueue(event.getUniqueId(), event.getName());
                     queuePos = plugin.getPositionInQueue(event.getUniqueId());
                     event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue.");
                 }
