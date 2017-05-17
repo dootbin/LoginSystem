@@ -30,7 +30,7 @@ public class loginQueueCommand implements CommandExecutor
 
             if (args.length == 0)
             {
-                sender.sendMessage("Please try putting something after the command like status.");
+                sender.sendMessage(ChatColor.AQUA + "Please try putting something after the command like status.");
                 return true;
             }
 
@@ -81,7 +81,7 @@ public class loginQueueCommand implements CommandExecutor
             }
         }
 
-        sender.sendMessage("Please try putting something after the command like status.");
+        sender.sendMessage(ChatColor.AQUA + "Please try putting something after the command like status.");
         return true;
     }
 
