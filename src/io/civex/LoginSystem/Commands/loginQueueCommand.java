@@ -7,6 +7,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 /**
  * Created by Ryan on 5/16/2017.
  */
@@ -25,6 +27,12 @@ public class loginQueueCommand implements CommandExecutor
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
+
+            if (args.length == 0)
+            {
+                sender.sendMessage("Please try putting something after the command like status.");
+                return true;
+            }
 
             //This is to stop people from logging in (usually for debug when making changes to this plugin)
             if (args[0].equalsIgnoreCase("stop"))
@@ -69,11 +77,11 @@ public class loginQueueCommand implements CommandExecutor
             if (args[0].equalsIgnoreCase("status"))
             {
                 sendLoginQueueStatus(player);
+                return true;
             }
         }
 
         sender.sendMessage("Please try putting something after the command like status.");
-        sender.sendMessage("Args[0] = " + args[0] + ".");
         return true;
     }
 
@@ -99,7 +107,15 @@ public class loginQueueCommand implements CommandExecutor
         int highPos = plugin.getHighestQueuePos();
         if (highPos > 0)
         {
-            player.sendMessage(ChatColor.AQUA + "The login queue has [" + highPos + "] people in it.");
+            if (highPos > 1)
+            {
+                player.sendMessage(ChatColor.AQUA + "The login queue has [" + highPos + "] people in it.");
+            }
+            else
+            {
+                player.sendMessage(ChatColor.AQUA + "The login queue has [" + highPos + "] person in it.");
+            }
+
 
             if (plugin.showedPlayersInStatus > 0)
             {
@@ -109,9 +125,9 @@ public class loginQueueCommand implements CommandExecutor
                     {
                         if (plugin.getUserInPosition(i) != null)
                         {
-                            sendPlayerPosInfoStatusMessage(player, plugin.getNameFromUUID(plugin.getUserInPosition(i)), i);
+                            UUID queuePerson = plugin.getUserInPosition(i);
+                            sendPlayerPosInfoStatusMessage(player, plugin.getNameFromUUID(queuePerson), i, queuePerson);
                         }
-
                     }
                 }
             }
@@ -120,12 +136,18 @@ public class loginQueueCommand implements CommandExecutor
         {
             player.sendMessage(ChatColor.AQUA + "There is no one in the queue.");
         }
-
     }
 
-    private void sendPlayerPosInfoStatusMessage(Player receiver, String playerInQueueName, int posInQueue)
+    private void sendPlayerPosInfoStatusMessage(Player receiver, String playerInQueueName, int posInQueue, UUID uuid)
     {
-        receiver.sendMessage(ChatColor.AQUA + "  [" + posInQueue + "] : " + playerInQueueName);
-    }
+        if (plugin.isOnTheClock(uuid))
+        {
+            receiver.sendMessage(ChatColor.RED + "  [" + posInQueue + "] : " + playerInQueueName + " is on the clock");
+        }
+        else
+        {
+            receiver.sendMessage(ChatColor.AQUA + "  [" + posInQueue + "] : " + playerInQueueName);
+        }
 
+    }
 }

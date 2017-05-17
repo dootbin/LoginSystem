@@ -28,7 +28,7 @@ public class PreLogin implements Listener
         int queuePos = plugin.getPositionInQueue(event.getUniqueId());
         int highestQueuePos = plugin.getHighestQueuePos();
 
-        if(!plugin.loginQueueProgressing)
+        if (!plugin.loginQueueProgressing)
         {
             availableSlots = 0;
         }
@@ -37,22 +37,22 @@ public class PreLogin implements Listener
         {
             if (queuePos > 0)
             {
-                event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue.");
+                event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
             }
             else
             {
                 plugin.addUserToLoginQueue(event.getUniqueId(), event.getName());
                 queuePos = plugin.getPositionInQueue(event.getUniqueId());
-                event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue.");
+                event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
             }
         }
         else if (availableSlots > 0)
         {
             if (queuePos > 0)
             {
-                if (queuePos >= availableSlots)
+                if (queuePos > availableSlots)
                 {
-                    event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue.");
+                    event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
                 }
             }
             else
@@ -61,8 +61,17 @@ public class PreLogin implements Listener
                 {
                     plugin.addUserToLoginQueue(event.getUniqueId(), event.getName());
                     queuePos = plugin.getPositionInQueue(event.getUniqueId());
-                    event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue.");
+                    event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
                 }
+            }
+        }
+        else
+        {
+            if (availableSlots == 0)
+            {
+                plugin.addUserToLoginQueue(event.getUniqueId(), event.getName());
+                queuePos = plugin.getPositionInQueue(event.getUniqueId());
+                event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
             }
         }
     }

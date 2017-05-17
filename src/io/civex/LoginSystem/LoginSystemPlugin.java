@@ -34,7 +34,11 @@ public class LoginSystemPlugin extends JavaPlugin
     public void onEnable()
     {
         loginQueue = HashBiMap.create();
+        uuidToName = new HashMap<UUID, String>();
+        onTheClock = new ArrayList<UUID>();
         highestQueuePos = 0;
+
+        regStuff();
     }
 
     @Override
@@ -153,5 +157,4 @@ public class LoginSystemPlugin extends JavaPlugin
         if (onTheClock.contains(p)) return true;
         return false;
     }
-
 }
