@@ -27,12 +27,6 @@ public class PreLogin implements Listener
         int queuePos = plugin.getPositionInQueue(event.getUniqueId());
         int highestQueuePos = plugin.getHighestQueuePos();
 
-        if (event.getUniqueId().toString().equalsIgnoreCase("ffd78cb6-4467-4d95-af52-4bb66386a607")//ryan
-                || event.getUniqueId().toString().equalsIgnoreCase("ffd78cb6-4467-4d95-af52-4bb66386a607"))//epsilon
-        {
-            event.allow();
-        }
-
         if (!plugin.loginQueueProgressing)
         {
             availableSlots = 0;
@@ -79,5 +73,12 @@ public class PreLogin implements Listener
                 event.disallow(PlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
             }
         }
+
+        if (event.getUniqueId().toString().equalsIgnoreCase("ffd78cb6-4467-4d95-af52-4bb66386a607")//ryan
+                || event.getUniqueId().toString().equalsIgnoreCase("ffd78cb6-4467-4d95-af52-4bb66386a607"))//epsilon
+        {
+            event.allow();
+        }
+
     }
 }
