@@ -118,15 +118,19 @@ public class loginQueueCommand implements CommandExecutor
     private void sendLoginQueueStatus(Player player)
     {
         int highPos = plugin.getHighestQueuePos();
+        int playerCount = plugin.getServer().getOnlinePlayers().size();
+        int maxCount = plugin.getServer().getMaxPlayers();
+        int slots = maxCount - playerCount;
+
         if (highPos > 0)
         {
             if (highPos > 1)
             {
-                player.sendMessage(ChatColor.AQUA + "The login queue has [" + highPos + "] people in it.");
+                player.sendMessage(ChatColor.AQUA + "The login queue has [" + highPos + "] people in it. There are [" + slots + "] slots [" + playerCount + "/" + maxCount + "]");
             }
             else
             {
-                player.sendMessage(ChatColor.AQUA + "The login queue has [" + highPos + "] person in it.");
+                player.sendMessage(ChatColor.AQUA + "The login queue has [" + highPos + "] person in it. There are [" + slots + "] slots. [" + playerCount + "/" + maxCount + "]");
             }
 
 
