@@ -53,7 +53,7 @@ public class Login implements Listener
         if (!plugin.isOnTheClock(p))
         {
             plugin.addUserToOnTheClock(p);
-            new LoginTimeRunnable(plugin, p).runTaskLater(plugin, 120 * 19L);
+            new LoginTimeRunnable(plugin, p).runTaskLater(plugin, plugin.allowedConnectTime * 19L);
         }
     }
 }

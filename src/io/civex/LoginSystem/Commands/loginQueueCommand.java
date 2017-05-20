@@ -74,6 +74,19 @@ public class loginQueueCommand implements CommandExecutor
                 return true;
             }
 
+            if (args[0].equalsIgnoreCase("reset"))
+            {
+                if (!player.hasPermission("civex.queue.restart") || !player.isOp())
+                {
+                    sendNoPermission(player);
+                    return true;
+                }
+
+                plugin.resetQueue();
+                player.sendMessage(ChatColor.RED + "YOU HAVE RESET THE QUEUE");
+                return true;
+            }
+
             if (args[0].equalsIgnoreCase("status"))
             {
                 sendLoginQueueStatus(player);

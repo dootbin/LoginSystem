@@ -157,4 +157,17 @@ public class LoginSystemPlugin extends JavaPlugin
         if (onTheClock.contains(p)) return true;
         return false;
     }
+
+    public void resetQueue()
+    {
+        loginQueue.clear();
+        uuidToName.clear();
+        onTheClock.clear();
+
+        loginQueue = HashBiMap.create();
+        uuidToName = new HashMap<UUID, String>();
+        onTheClock = new ArrayList<UUID>();
+
+        highestQueuePos = 0;
+    }
 }

@@ -3,7 +3,7 @@ package io.civex.LoginSystem.Listeners;
 import io.civex.LoginSystem.LoginSystemPlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerPreLoginEvent;
 
 /**
  * Created by Ryan on 5/15/2017.
@@ -17,10 +17,9 @@ public class PreLogin implements Listener
         this.plugin = pl;
     }
 
-
     //if slots available >= your queue pos allow in.
     @EventHandler
-    public void onPreLogin(AsyncPlayerPreLoginEvent event)
+    public void onPreLogin(PlayerPreLoginEvent event)
     {
         int playerCount = plugin.getServer().getOnlinePlayers().size();
         int maxPlayerCount = plugin.getServer().getMaxPlayers();
@@ -37,13 +36,13 @@ public class PreLogin implements Listener
         {
             if (queuePos > 0)
             {
-                event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
+                event.disallow(PlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
             }
             else
             {
                 plugin.addUserToLoginQueue(event.getUniqueId(), event.getName());
                 queuePos = plugin.getPositionInQueue(event.getUniqueId());
-                event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
+                event.disallow(PlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
             }
         }
         else if (availableSlots > 0)
@@ -52,7 +51,7 @@ public class PreLogin implements Listener
             {
                 if (queuePos > availableSlots)
                 {
-                    event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
+                    event.disallow(PlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
                 }
             }
             else
@@ -61,7 +60,7 @@ public class PreLogin implements Listener
                 {
                     plugin.addUserToLoginQueue(event.getUniqueId(), event.getName());
                     queuePos = plugin.getPositionInQueue(event.getUniqueId());
-                    event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
+                    event.disallow(PlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
                 }
             }
         }
@@ -71,7 +70,7 @@ public class PreLogin implements Listener
             {
                 plugin.addUserToLoginQueue(event.getUniqueId(), event.getName());
                 queuePos = plugin.getPositionInQueue(event.getUniqueId());
-                event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
+                event.disallow(PlayerPreLoginEvent.Result.KICK_FULL, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
             }
         }
     }
