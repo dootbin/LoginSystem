@@ -87,7 +87,39 @@ public class loginQueueCommand implements CommandExecutor
                 return true;
             }
 
-            if (args[0].equalsIgnoreCase("status"))
+            if (args[0].equalsIgnoreCase("remove"))
+            {
+                if (!player.hasPermission("civex.queue.remove") || !player.isOp())
+                {
+                    sendNoPermission(player);
+                    return true;
+                }
+
+                if (args.length > 1)
+                {
+                    int personToRemove = 0;
+                    try
+                    {
+                        personToRemove = Integer.parseInt(args[1]);
+                    }
+                    catch (Exception ex)
+                    {
+                        player.sendMessage(ChatColor.RED + "Could not parse your int. Please use /queue remove INT");
+                        return true;
+                    }
+
+                    if (personToRemove > 0)
+                    {
+                        plugin.removeUserAtPos(personToRemove);
+                        player.sendMessage(ChatColor.AQUA + "You have removed [" + ChatColor.WHITE +
+                                plugin.getNameFromUUID(plugin.getUserInPosition(personToRemove)) + ChatColor.AQUA +
+                                "][pos" + ChatColor.WHITE + personToRemove + ChatColor.AQUA + "] from the queue.");
+                        return true;
+                    }
+                }
+            }
+
+            if (args[0].equalsIgnoreCase("status") || args[0].equalsIgnoreCase("list"))
             {
                 sendLoginQueueStatus(player);
                 return true;
@@ -152,6 +184,22 @@ public class loginQueueCommand implements CommandExecutor
         else
         {
             player.sendMessage(ChatColor.AQUA + "There is no one in the queue.");
+        }
+    }
+
+    private String slotsAndPlayerCount(int slots, int playerCount, int maxCount)
+    {
+        if (slots > 1)
+        {
+            return "There are [" + slots + "] slots [" + playerCount + "/" + maxCount + "]";
+        }
+        else if (slots == 1)
+        {
+            return "There is [" + slots + "] slot [" + playerCount + "/" + maxCount + "]";
+        }
+        else
+        {
+            return "There are [NO] slots [" + playerCount + "/" + maxCount + "]";
         }
     }
 

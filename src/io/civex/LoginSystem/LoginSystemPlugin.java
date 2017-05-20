@@ -127,6 +127,11 @@ public class LoginSystemPlugin extends JavaPlugin
             newMap.put(player, pos);
         }
 
+        if (isOnTheClock(p))
+        {
+            removeUserFromTheClock(p);
+        }
+
         highestQueuePos--;
         loginQueue = newMap;
     }
