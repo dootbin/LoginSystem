@@ -158,11 +158,11 @@ public class loginQueueCommand implements CommandExecutor
         {
             if (highPos > 1)
             {
-                player.sendMessage(ChatColor.AQUA + "The login queue has [" + highPos + "] people in it. There are [" + slots + "] slots [" + playerCount + "/" + maxCount + "]");
+                player.sendMessage(ChatColor.AQUA + "The are [" + highPos + "] people waiting. There are [" + slots + "] slots [" + playerCount + "/" + maxCount + "]");
             }
             else
             {
-                player.sendMessage(ChatColor.AQUA + "The login queue has [" + highPos + "] person in it. There are [" + slots + "] slots. [" + playerCount + "/" + maxCount + "]");
+                player.sendMessage(ChatColor.AQUA + "The is [" + highPos + "] person waiting. There are [" + slots + "] slots. [" + playerCount + "/" + maxCount + "]");
             }
 
 
@@ -183,7 +183,7 @@ public class loginQueueCommand implements CommandExecutor
         }
         else
         {
-            player.sendMessage(ChatColor.AQUA + "There is no one in the queue.");
+            player.sendMessage(ChatColor.AQUA + "There is no one in the queue. [" + slots + "] [" + playerCount + "/" + maxCount + "]");
         }
     }
 

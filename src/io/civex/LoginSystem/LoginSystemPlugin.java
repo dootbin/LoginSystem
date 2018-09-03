@@ -2,9 +2,10 @@ package io.civex.LoginSystem;
 
 import com.google.common.collect.HashBiMap;
 import io.civex.LoginSystem.Commands.loginQueueCommand;
-import io.civex.LoginSystem.Listeners.Login;
+import io.civex.LoginSystem.Listeners.Join;
 import io.civex.LoginSystem.Listeners.Logout;
-import io.civex.LoginSystem.Listeners.PreLogin;
+import io.civex.LoginSystem.Listeners.Login;
+import io.civex.LoginSystem.Utils.LoginTimeRunnable;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -25,8 +26,8 @@ public class LoginSystemPlugin extends JavaPlugin
     private int highestQueuePos;
 
     private Logout logoutListener;
+    private Join joinListener;
     private Login loginListener;
-    private PreLogin preLoginListener;
 
     public boolean loginQueueProgressing = true;
 
@@ -49,13 +50,13 @@ public class LoginSystemPlugin extends JavaPlugin
 
     private void regStuff()
     {
-        loginListener = new Login(this);
+        joinListener = new Join(this);
         logoutListener = new Logout(this);
-        preLoginListener = new PreLogin(this);
+        loginListener = new Login(this);
 
         getServer().getPluginManager().registerEvents(loginListener, this);
         getServer().getPluginManager().registerEvents(logoutListener, this);
-        getServer().getPluginManager().registerEvents(preLoginListener, this);
+        getServer().getPluginManager().registerEvents(loginListener, this);
 
         getServer().getPluginCommand("queue").setExecutor(new loginQueueCommand(this));
     }
@@ -174,5 +175,31 @@ public class LoginSystemPlugin extends JavaPlugin
         onTheClock = new ArrayList<UUID>();
 
         highestQueuePos = 0;
+    }
+
+    public void checkIfUsersShouldBeOnClock()
+    {
+        int availableSlots = getServer().getMaxPlayers() - getServer().getOnlinePlayers().size();
+        availableSlots--;
+
+        if (availableSlots > 0)
+        {
+            for (int i = availableSlots; i > 0; i--)
+            {
+                if (getUserInPosition(i) != null)
+                {
+                    putPlayerOnTheClock(getUserInPosition(i));
+                }
+            }
+        }
+    }
+
+    public void putPlayerOnTheClock(UUID p)
+    {
+        if (!isOnTheClock(p))
+        {
+            addUserToOnTheClock(p);
+            new LoginTimeRunnable(this, p).runTaskLater(this, this.allowedConnectTime * 19L);
+        }
     }
 }

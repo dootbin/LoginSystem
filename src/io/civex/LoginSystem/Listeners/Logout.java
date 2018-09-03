@@ -23,27 +23,6 @@ public class Logout implements Listener
     @EventHandler
     public void onLogout(PlayerQuitEvent event)
     {
-        int availableSlots = plugin.getServer().getMaxPlayers() - plugin.getServer().getOnlinePlayers().size();
-        availableSlots++;
-
-        if (availableSlots > 0)
-        {
-            for (int i = availableSlots; i > 0; i--)
-            {
-                if (plugin.getUserInPosition(i) != null)
-                {
-                    putPlayerOnTheClock(plugin.getUserInPosition(i));
-                }
-            }
-        }
-    }
-
-    private void putPlayerOnTheClock(UUID p)
-    {
-        if (!plugin.isOnTheClock(p))
-        {
-            plugin.addUserToOnTheClock(p);
-            new LoginTimeRunnable(plugin, p).runTaskLater(plugin, plugin.allowedConnectTime * 19L);
-        }
+        plugin.checkIfUsersShouldBeOnClock();
     }
 }

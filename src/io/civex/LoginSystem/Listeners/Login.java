@@ -1,16 +1,13 @@
 package io.civex.LoginSystem.Listeners;
 
 import io.civex.LoginSystem.LoginSystemPlugin;
-import io.civex.LoginSystem.Utils.LoginTimeRunnable;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
-
-import java.util.UUID;
+import org.bukkit.event.player.PlayerPreLoginEvent;
 
 /**
- * Created by Ryan on 5/16/2017.
+ * Created by Ryan on 5/15/2017.
  */
 public class Login implements Listener
 {
@@ -21,39 +18,78 @@ public class Login implements Listener
         this.plugin = pl;
     }
 
+    //if slots available >= your queue pos allow in.
     @EventHandler
     public void onLogin(PlayerLoginEvent event)
     {
-        Player p = event.getPlayer();
+        int playerCount = plugin.getServer().getOnlinePlayers().size();
+        int maxPlayerCount = plugin.getServer().getMaxPlayers();
+        int availableSlots = maxPlayerCount - playerCount;
+        int queuePos = plugin.getPositionInQueue(event.getPlayer().getUniqueId());
+        int highestQueuePos = plugin.getHighestQueuePos();
 
-        int queuePos = plugin.getPositionInQueue(p.getUniqueId());
-
-        if (queuePos > 0)
+        if (!plugin.loginQueueProgressing)
         {
-            plugin.removeUserAtPos(queuePos);
+            availableSlots = 0;
         }
-
-        int availableSlots = plugin.getServer().getMaxPlayers() - plugin.getServer().getOnlinePlayers().size();
-        availableSlots--;
-
-        if (availableSlots > 0)
+        if (highestQueuePos > 0)
         {
-            for (int i = availableSlots; i > 0; i--)
+            if (queuePos > 0)
             {
-                if (plugin.getUserInPosition(i) != null)
+                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
+            }
+            else
+            {
+                plugin.addUserToLoginQueue(event.getPlayer().getUniqueId(), event.getPlayer().getName());
+                queuePos = plugin.getPositionInQueue(event.getPlayer().getUniqueId());
+                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
+            }
+        }
+        else if (playerCount >= maxPlayerCount)
+        {
+            if (queuePos > 0)
+            {
+                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
+            }
+            else
+            {
+                plugin.addUserToLoginQueue(event.getPlayer().getUniqueId(), event.getPlayer().getName());
+                queuePos = plugin.getPositionInQueue(event.getPlayer().getUniqueId());
+                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
+            }
+        }
+        else if (availableSlots > 0)
+        {
+            if (queuePos > 0)
+            {
+                if (queuePos > availableSlots)
                 {
-                    putPlayerOnTheClock(plugin.getUserInPosition(i));
+                    event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
+                }
+            }
+            else
+            {
+                if (highestQueuePos > availableSlots)
+                {
+                    plugin.addUserToLoginQueue(event.getPlayer().getUniqueId(), event.getPlayer().getName());
+                    queuePos = plugin.getPositionInQueue(event.getPlayer().getUniqueId());
+                    event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
                 }
             }
         }
-    }
-
-    private void putPlayerOnTheClock(UUID p)
-    {
-        if (!plugin.isOnTheClock(p))
+        else
         {
-            plugin.addUserToOnTheClock(p);
-            new LoginTimeRunnable(plugin, p).runTaskLater(plugin, plugin.allowedConnectTime * 19L);
+            if (availableSlots == 0)
+            {
+                plugin.addUserToLoginQueue(event.getPlayer().getUniqueId(), event.getPlayer().getName());
+                queuePos = plugin.getPositionInQueue(event.getPlayer().getUniqueId());
+                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
+            }
+        }
+
+        if (event.getPlayer().isOp())
+        {
+            event.allow();
         }
     }
 }
