@@ -23,3 +23,12 @@ permissions:
   civex.queue.remove:
     default: op
     description: Allows the removal of a player from the queue.
+  civex.queue.*:
+    default: op
+    dexcription: Wildcard permission for admins
+    children:
+      civex.queue.reload: true
+      civex.queue.stopQueue: true
+      civex.queue.bypass: true
+      civex.queue.restart: true
+      civex.queue.remove: true
