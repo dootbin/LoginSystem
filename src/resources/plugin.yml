@@ -12,3 +12,6 @@ permissions:
     civex.queue.stopQueue:
         default: op
         description: Allows the changing of queue state.
+    civex.queue.bypass:
+        default: op
+        description: Allows the bypassing of the queue.
