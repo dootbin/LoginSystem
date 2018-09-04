@@ -1,0 +1,2 @@
+connection-time: 30 # Number of seconds before a queued user is sent to the back of the queue
+view-size: 5 # Number of queued players to show in the status command

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.civex</groupId>
-    <artifactId>LoginSystem</artifactId>
+    <artifactId>LoginQueue</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
@@ -85,7 +85,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>io.civex.LoginSystem.LoginSystemPlugin</mainClass>
+                            <mainClass>io.civex.LoginSystem.LoginQueue</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

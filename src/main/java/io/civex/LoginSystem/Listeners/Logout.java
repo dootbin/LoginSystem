@@ -1,21 +1,18 @@
 package io.civex.LoginSystem.Listeners;
 
-import io.civex.LoginSystem.LoginSystemPlugin;
-import io.civex.LoginSystem.Utils.LoginTimeRunnable;
+import io.civex.LoginSystem.LoginQueue;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
-
-import java.util.UUID;
 
 /**
  * Created by Ryan on 5/16/2017.
  */
 public class Logout implements Listener
 {
-    LoginSystemPlugin plugin;
+    LoginQueue plugin;
 
-    public Logout(LoginSystemPlugin plugin)
+    public Logout(LoginQueue plugin)
     {
         this.plugin = plugin;
     }

@@ -1,6 +1,6 @@
 package io.civex.LoginSystem.Utils;
 
-import io.civex.LoginSystem.LoginSystemPlugin;
+import io.civex.LoginSystem.LoginQueue;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
@@ -10,10 +10,10 @@ import java.util.UUID;
  */
 public class LoginTimeRunnable extends BukkitRunnable
 {
-    private LoginSystemPlugin plugin;
+    private LoginQueue plugin;
     private UUID player;
 
-    public LoginTimeRunnable(LoginSystemPlugin plugin, UUID player)
+    public LoginTimeRunnable(LoginQueue plugin, UUID player)
     {
         this.plugin = plugin;
         this.player = player;

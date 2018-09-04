@@ -1,19 +1,18 @@
 package io.civex.LoginSystem.Listeners;
 
-import io.civex.LoginSystem.LoginSystemPlugin;
+import io.civex.LoginSystem.LoginQueue;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerPreLoginEvent;
 
 /**
  * Created by Ryan on 5/15/2017.
  */
 public class Login implements Listener
 {
-    LoginSystemPlugin plugin;
+    LoginQueue plugin;
 
-    public Login(LoginSystemPlugin pl)
+    public Login(LoginQueue pl)
     {
         this.plugin = pl;
     }
@@ -32,33 +31,8 @@ public class Login implements Listener
         {
             availableSlots = 0;
         }
-        if (highestQueuePos > 0)
-        {
-            if (queuePos > 0)
-            {
-                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
-            }
-            else
-            {
-                plugin.addUserToLoginQueue(event.getPlayer().getUniqueId(), event.getPlayer().getName());
-                queuePos = plugin.getPositionInQueue(event.getPlayer().getUniqueId());
-                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
-            }
-        }
-        else if (playerCount >= maxPlayerCount)
-        {
-            if (queuePos > 0)
-            {
-                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
-            }
-            else
-            {
-                plugin.addUserToLoginQueue(event.getPlayer().getUniqueId(), event.getPlayer().getName());
-                queuePos = plugin.getPositionInQueue(event.getPlayer().getUniqueId());
-                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
-            }
-        }
-        else if (availableSlots > 0)
+
+        if (availableSlots > 0)
         {
             if (queuePos > 0)
             {
@@ -79,7 +53,11 @@ public class Login implements Listener
         }
         else
         {
-            if (availableSlots == 0)
+            if (queuePos > 0)
+            {
+                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
+            }
+            else
             {
                 plugin.addUserToLoginQueue(event.getPlayer().getUniqueId(), event.getPlayer().getName());
                 queuePos = plugin.getPositionInQueue(event.getPlayer().getUniqueId());
@@ -87,6 +65,8 @@ public class Login implements Listener
             }
         }
 
+
+        // Bypass
         if (event.getPlayer().hasPermission("civex.queue.bypass"))
         {
             event.allow();

@@ -1,11 +1,13 @@
 package io.civex.LoginSystem;
 
 import com.google.common.collect.HashBiMap;
-import io.civex.LoginSystem.Commands.loginQueueCommand;
+import io.civex.LoginSystem.Commands.LoginQueueCommand;
 import io.civex.LoginSystem.Listeners.Join;
 import io.civex.LoginSystem.Listeners.Logout;
 import io.civex.LoginSystem.Listeners.Login;
 import io.civex.LoginSystem.Utils.LoginTimeRunnable;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -16,10 +18,9 @@ import java.util.UUID;
  * Created by Ryan on 5/15/2017.
  * Test line to try to fix a local github ssl error where my stuff is out of sync.
  */
-public class LoginSystemPlugin extends JavaPlugin
+public class LoginQueue extends JavaPlugin
 {
-    public int allowedConnectTime = 45;   //Time in seconds (ish (19ticks)) allowed to connect before being put at the back of queue
-    public int showedPlayersInStatus = 5; //Max showed players in the login queue to players running command.
+    public static FileConfiguration config;
 
     private HashBiMap<UUID, Integer> loginQueue;
     private HashMap<UUID, String> uuidToName;
@@ -35,6 +36,9 @@ public class LoginSystemPlugin extends JavaPlugin
     @Override
     public void onEnable()
     {
+        saveDefaultConfig();
+        reloadConfig();
+
         loginQueue = HashBiMap.create();
         uuidToName = new HashMap<UUID, String>();
         onTheClock = new ArrayList<UUID>();
@@ -49,17 +53,27 @@ public class LoginSystemPlugin extends JavaPlugin
 
     }
 
+    public void loadConfig() {
+        config = Bukkit.getPluginManager().getPlugin("LoginQueue").getConfig();
+    }
+
+    @Override
+    public void reloadConfig() {
+        super.reloadConfig();
+        loadConfig();
+    }
+
     private void regStuff()
     {
         joinListener = new Join(this);
         logoutListener = new Logout(this);
         loginListener = new Login(this);
 
-        getServer().getPluginManager().registerEvents(loginListener, this);
+        getServer().getPluginManager().registerEvents(joinListener, this);
         getServer().getPluginManager().registerEvents(logoutListener, this);
         getServer().getPluginManager().registerEvents(loginListener, this);
 
-        getServer().getPluginCommand("queue").setExecutor(new loginQueueCommand(this));
+        getServer().getPluginCommand("queue").setExecutor(new LoginQueueCommand(this));
     }
 
     public String getNameFromUUID(UUID p)
@@ -181,7 +195,7 @@ public class LoginSystemPlugin extends JavaPlugin
     public void checkIfUsersShouldBeOnClock()
     {
         int availableSlots = getServer().getMaxPlayers() - getServer().getOnlinePlayers().size();
-        availableSlots--;
+        availableSlots++;
 
         if (availableSlots > 0)
         {
@@ -200,7 +214,7 @@ public class LoginSystemPlugin extends JavaPlugin
         if (!isOnTheClock(p))
         {
             addUserToOnTheClock(p);
-            new LoginTimeRunnable(this, p).runTaskLater(this, this.allowedConnectTime * 19L);
+            new LoginTimeRunnable(this, p).runTaskLater(this, config.getInt("connection-time", 30) * 19L);
         }
     }
 }
