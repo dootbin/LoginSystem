@@ -37,7 +37,7 @@ public class loginQueueCommand implements CommandExecutor
             //This is to stop people from logging in (usually for debug when making changes to this plugin)
             if (args[0].equalsIgnoreCase("stop"))
             {
-                if (!player.hasPermission("civex.queue.stopQueue") || !player.isOp())
+                if (!player.hasPermission("civex.queue.stopQueue"))
                 {
                     sendNoPermission(player);
                     return true;
@@ -50,7 +50,7 @@ public class loginQueueCommand implements CommandExecutor
 
             if (args[0].equalsIgnoreCase("start"))
             {
-                if (!player.hasPermission("civex.queue.stopQueue") || !player.isOp())
+                if (!player.hasPermission("civex.queue.stopQueue"))
                 {
                     sendNoPermission(player);
                     return true;
@@ -63,7 +63,7 @@ public class loginQueueCommand implements CommandExecutor
 
             if (args[0].equalsIgnoreCase("toggle"))
             {
-                if (!player.hasPermission("civex.queue.stopQueue") || !player.isOp())
+                if (!player.hasPermission("civex.queue.stopQueue"))
                 {
                     sendNoPermission(player);
                     return true;
@@ -76,7 +76,7 @@ public class loginQueueCommand implements CommandExecutor
 
             if (args[0].equalsIgnoreCase("reset"))
             {
-                if (!player.hasPermission("civex.queue.restart") || !player.isOp())
+                if (!player.hasPermission("civex.queue.restart"))
                 {
                     sendNoPermission(player);
                     return true;
@@ -89,7 +89,7 @@ public class loginQueueCommand implements CommandExecutor
 
             if (args[0].equalsIgnoreCase("remove"))
             {
-                if (!player.hasPermission("civex.queue.remove") || !player.isOp())
+                if (!player.hasPermission("civex.queue.remove"))
                 {
                     sendNoPermission(player);
                     return true;
