@@ -30,6 +30,6 @@ public class Join implements Listener
             plugin.removeUserAtPos(queuePos);
         }
 
-        plugin.checkIfUsersShouldBeOnClock();
+        plugin.checkIfUsersShouldBeOnClock(0);
     }
 }

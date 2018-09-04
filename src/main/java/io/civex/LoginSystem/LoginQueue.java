@@ -192,10 +192,10 @@ public class LoginQueue extends JavaPlugin
         highestQueuePos = 0;
     }
 
-    public void checkIfUsersShouldBeOnClock()
+    public void checkIfUsersShouldBeOnClock(int modifier)
     {
-        int availableSlots = getServer().getMaxPlayers() - getServer().getOnlinePlayers().size();
-        availableSlots++;
+
+        int availableSlots = getServer().getMaxPlayers() - getServer().getOnlinePlayers().size() + modifier;
 
         if (availableSlots > 0)
         {

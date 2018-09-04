@@ -20,6 +20,6 @@ public class Logout implements Listener
     @EventHandler
     public void onLogout(PlayerQuitEvent event)
     {
-        plugin.checkIfUsersShouldBeOnClock();
+        plugin.checkIfUsersShouldBeOnClock(1);
     }
 }

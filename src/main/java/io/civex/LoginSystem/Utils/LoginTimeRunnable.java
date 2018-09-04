@@ -27,7 +27,7 @@ public class LoginTimeRunnable extends BukkitRunnable
         if (queuePos > 0)
         {
             plugin.removeUserAtPos(queuePos);
-            plugin.checkIfUsersShouldBeOnClock();
+            plugin.checkIfUsersShouldBeOnClock(0);
         }
     }
 }
