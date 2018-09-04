@@ -15,3 +15,9 @@ permissions:
     civex.queue.bypass:
         default: op
         description: Allows the bypassing of the queue.
+    civex.queue.restart:
+        default: op
+        description: Allows the restart of the queue.
+    civex.queue.remove:
+        default: op
+        description: Allows the removal of a player from the queue.
