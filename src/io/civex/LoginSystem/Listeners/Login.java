@@ -87,7 +87,7 @@ public class Login implements Listener
             }
         }
 
-        if (event.getPlayer().isOp())
+        if (event.getPlayer().hasPermission("civex.queue.bypass"))
         {
             event.allow();
         }
