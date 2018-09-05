@@ -69,7 +69,7 @@ You should/The queue should/The plugin should/Why doesn't it/etc
 ----------------------------------------------------------------
 Yes, there are a _million_ ways to improve on a simple queue. The reality is, we probably won't even need the queue after a few weeks.  
 If there _is_ still a need, I will look into improvements.  
-If you have a suggestion, please don't bring it to my attention unless it's truly revolutionary.  
+If you have a suggestion, please **don't** bring it to my attention unless it's truly revolutionary.  
 Yes, I know it could ping Discord.  
 Yes, I know it could have a web interface.  
 Sure, it could update the MOTD.  
