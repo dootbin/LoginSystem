@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
  */
 public class Join implements Listener
 {
-    LoginQueue plugin;
+    private LoginQueue plugin;
 
     public Join(LoginQueue pl)
     {

@@ -20,16 +20,13 @@ import java.util.UUID;
  */
 public class LoginQueue extends JavaPlugin
 {
-    public static FileConfiguration config;
+    private static FileConfiguration config;
 
     private HashBiMap<UUID, Integer> loginQueue;
     private HashMap<UUID, String> uuidToName;
     private ArrayList<UUID> onTheClock;
     private int highestQueuePos;
 
-    private Logout logoutListener;
-    private Join joinListener;
-    private Login loginListener;
 
     public boolean loginQueueProgressing = true;
 
@@ -40,8 +37,8 @@ public class LoginQueue extends JavaPlugin
         reloadConfig();
 
         loginQueue = HashBiMap.create();
-        uuidToName = new HashMap<UUID, String>();
-        onTheClock = new ArrayList<UUID>();
+        uuidToName = new HashMap<>();
+        onTheClock = new ArrayList<>();
         highestQueuePos = 0;
 
         regStuff();
@@ -53,7 +50,7 @@ public class LoginQueue extends JavaPlugin
 
     }
 
-    public void loadConfig() {
+    private void loadConfig() {
         config = Bukkit.getPluginManager().getPlugin("LoginQueue").getConfig();
     }
 
@@ -65,13 +62,9 @@ public class LoginQueue extends JavaPlugin
 
     private void regStuff()
     {
-        joinListener = new Join(this);
-        logoutListener = new Logout(this);
-        loginListener = new Login(this);
-
-        getServer().getPluginManager().registerEvents(joinListener, this);
-        getServer().getPluginManager().registerEvents(logoutListener, this);
-        getServer().getPluginManager().registerEvents(loginListener, this);
+        getServer().getPluginManager().registerEvents(new Join(this), this);
+        getServer().getPluginManager().registerEvents(new Logout(this), this);
+        getServer().getPluginManager().registerEvents(new Login(this), this);
 
         getServer().getPluginCommand("queue").setExecutor(new LoginQueueCommand(this));
     }
@@ -100,12 +93,10 @@ public class LoginQueue extends JavaPlugin
 
     public synchronized void addUserToLoginQueue(UUID p, String name)
     {
-        if (!loginQueue.containsKey(p))
-        {
-            loginQueue.put(p, ++highestQueuePos);
-        }
 
-        if (!uuidToName.containsKey(name))
+        loginQueue.forcePut(p, ++highestQueuePos);
+
+        if (!uuidToName.containsKey(p))
         {
             uuidToName.put(p, name);
         }
@@ -157,7 +148,7 @@ public class LoginQueue extends JavaPlugin
         return highestQueuePos;
     }
 
-    public void addUserToOnTheClock(UUID p)
+    private void addUserToOnTheClock(UUID p)
     {
         if (!onTheClock.contains(p))
         {
@@ -165,18 +156,14 @@ public class LoginQueue extends JavaPlugin
         }
     }
 
-    public void removeUserFromTheClock(UUID p)
+    private void removeUserFromTheClock(UUID p)
     {
-        if (onTheClock.contains(p))
-        {
-            onTheClock.remove(p);
-        }
+        onTheClock.remove(p);
     }
 
     public boolean isOnTheClock(UUID p)
     {
-        if (onTheClock.contains(p)) return true;
-        return false;
+        return onTheClock.contains(p);
     }
 
     public void resetQueue()
@@ -186,8 +173,8 @@ public class LoginQueue extends JavaPlugin
         onTheClock.clear();
 
         loginQueue = HashBiMap.create();
-        uuidToName = new HashMap<UUID, String>();
-        onTheClock = new ArrayList<UUID>();
+        uuidToName = new HashMap<>();
+        onTheClock = new ArrayList<>();
 
         highestQueuePos = 0;
     }
@@ -209,7 +196,7 @@ public class LoginQueue extends JavaPlugin
         }
     }
 
-    public void putPlayerOnTheClock(UUID p)
+    private void putPlayerOnTheClock(UUID p)
     {
         if (!isOnTheClock(p))
         {

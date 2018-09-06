@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
  */
 public class Login implements Listener
 {
-    LoginQueue plugin;
+    private LoginQueue plugin;
 
     public Login(LoginQueue pl)
     {

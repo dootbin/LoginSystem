@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
  */
 public class Logout implements Listener
 {
-    LoginQueue plugin;
+    private LoginQueue plugin;
 
     public Logout(LoginQueue plugin)
     {

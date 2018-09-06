@@ -14,7 +14,7 @@ import java.util.UUID;
  */
 public class LoginQueueCommand implements CommandExecutor
 {
-    LoginQueue plugin;
+    private LoginQueue plugin;
 
     public LoginQueueCommand(LoginQueue plugin)
     {
