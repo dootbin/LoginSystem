@@ -93,8 +93,10 @@ public class LoginQueue extends JavaPlugin
 
     public synchronized void addUserToLoginQueue(UUID p, String name)
     {
-
-        loginQueue.forcePut(p, ++highestQueuePos);
+        if (!loginQueue.containsKey(p))
+        {
+            loginQueue.put(p, ++highestQueuePos);
+        }
 
         if (!uuidToName.containsKey(p))
         {
