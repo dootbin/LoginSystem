@@ -49,7 +49,7 @@ public class Login implements Listener
             }
             else if (highestQueuePos >= availableSlots)
             {
-                plugin.addUserToLoginQueue(event.getPlayer().getUniqueId(), event.getPlayer().getName());
+                plugin.addUserToLoginQueue(event.getPlayer(), event.getAddress().getHostAddress());
                 queuePos = plugin.getPositionInQueue(event.getPlayer().getUniqueId());
                 event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
             }
@@ -62,7 +62,7 @@ public class Login implements Listener
             }
             else
             {
-                plugin.addUserToLoginQueue(event.getPlayer().getUniqueId(), event.getPlayer().getName());
+                plugin.addUserToLoginQueue(event.getPlayer(), event.getAddress().getHostAddress());
                 queuePos = plugin.getPositionInQueue(event.getPlayer().getUniqueId());
                 event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "You're [#" + queuePos + "] in the queue. Please connect again in a bit.");
             }

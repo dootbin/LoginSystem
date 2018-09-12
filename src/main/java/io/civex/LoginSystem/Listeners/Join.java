@@ -6,6 +6,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.Date;
+
 /**
  * Created by Ryan on 5/16/2017.
  */
@@ -27,6 +29,7 @@ public class Join implements Listener
 
         if (queuePos > 0)
         {
+            plugin.addAverageTime(p.getUniqueId(), new Date().getTime());
             plugin.removeUserAtPos(queuePos);
         }
 

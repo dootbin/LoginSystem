@@ -68,9 +68,14 @@ If a Mod logs in and it goes up to 76, we still want it to be 75. So when someon
 You should/The queue should/The plugin should/Why doesn't it/etc
 ----------------------------------------------------------------
 Yes, there are a _million_ ways to improve on a simple queue. The reality is, we probably won't even need the queue after a few weeks.  
-If there _is_ still a need, I will look into improvements.  
+If there _is_ still a need, I will look into improvements.
 If you have a suggestion, please **don't** bring it to my attention unless it's truly revolutionary.  
 Yes, I know it could ping Discord.  
 Yes, I know it could have a web interface.  
-Sure, it could update the MOTD.  
+~~Sure, it could update the MOTD.~~  
 The list goes on forever...  
+
+**UPDATE**
+----------
+I have implemented a way for you to see your queue position from the server list, meaning you now only have to refresh (F5) to see your progress.
+If you think there's a better way to do it, you're probably right. Read the section right above this.
