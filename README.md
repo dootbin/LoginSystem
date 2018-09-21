@@ -77,5 +77,5 @@ The list goes on forever...
 
 **UPDATE**
 ----------
-I have implemented a way for you to see your queue position from the server list, meaning you now only have to refresh (F5) to see your progress.
+I have created a way for you to see your queue position from the server list, meaning you now only have to refresh (F5) to see your progress. **This has not been implemented yet.**
 If you think there's a better way to do it, you're probably right. Read the section right above this.
